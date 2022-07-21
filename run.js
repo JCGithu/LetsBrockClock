@@ -9,10 +9,9 @@ client.on("connected", () => console.log('Reading from Twitch! ✅'));
 client.connect();
 client.on('message', (channel, tags, message, self) => {
   console.log(tags);
+  if (!tags.mod) return;
   if (message === '!pause') pause = true;
   if (message === "!unpause") pause = false;
-  if (!tags.mod) return;
-
   let split = message.split(' ');
   if (split.length > 2) return;
   if (split[0] === "!addsec"){
