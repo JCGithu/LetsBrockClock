@@ -63,10 +63,17 @@ h1 {
   transform: translateY(10px);
   font-size: 6rem;
   color: white;
-  animation: float 6s ease-in-out infinite;
   font-family: 'America Bold';
   margin: 0;
   padding: 0;
+}
+
+.float{
+  animation: float 6s ease-in-out infinite;
+}
+
+.freeze{
+  color: red !important;
 }
 
 h3{

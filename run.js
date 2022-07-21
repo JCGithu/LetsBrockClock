@@ -3,12 +3,16 @@ const client = new tmi.Client({
 });
 
 let time = document.getElementById('time');
+let pause = false;
 
 client.on("connected", () => console.log('Reading from Twitch! ✅'));
 client.connect();
 client.on('message', (channel, tags, message, self) => {
   console.log(tags);
+  if (message === '!pause') pause = true;
+  if (message === "!unpause") pause = false;
   if (!tags.mod) return;
+
   let split = message.split(' ');
   if (split.length > 2) return;
   if (split[0] === "!addsec"){
@@ -30,14 +34,24 @@ client.on('message', (channel, tags, message, self) => {
 
 
 // Set the date we're counting down to
-var countDownValue = 69;
+var countDownValue = 5009;
 
 // Update the count down every 1 second
 setInterval(() => {
+  if (pause) {
+    time.style.color = 'red';
+    time.style.setProperty('--nameCol', 'white');
+    time.className = '';
+    return; 
+  } else {
+    time.style.color = 'white';
+    time.className = 'float';
+    time.style.setProperty('--nameCol', 'black');
+  };
   if (countDownValue >= 1) countDownValue = countDownValue - 1;
-  let hours = Math.floor((countDownValue % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  let minutes = Math.floor(countDownValue / 60);
-  let seconds = Math.floor(countDownValue - minutes * 60);
+  let hours = Math.floor((countDownValue / 60)/60);
+  let minutes = Math.floor((countDownValue / 60) - (hours * 60));
+  let seconds = Math.floor(countDownValue - (minutes * 60) - (hours * 60 *60));
 
   hours = hours.toLocaleString('en-US', {
     minimumIntegerDigits: 2,
